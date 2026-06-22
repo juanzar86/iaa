@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAAS en Neonatos y Menores de 1 Año</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        /* Contenedor de la Portada / Encabezado */
+        .header-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .baby-avatar {
+            font-size: 70px;
+            color: #0b1b5e;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            color: #0b1b5e;
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            margin: 0;
+            color: #666;
+            font-weight: normal;
+            font-size: 1.1rem;
+        }
+
+        /* Grid de Tarjetas */
+        .grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            color: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos de los íconos en las tarjetas */
+        .card i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .card span {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Colores de las secciones */
+        .marco {
+            background: #2a9d8f;
+        }
+
+        .vigilancia {
+            background: #f4a261;
+        }
+
+        .antisepsia {
+            background: #a06cd5;
+        }
+
+        .dispositivos {
+            background: #e9c46a;
+        }
+
+        .alimentacion {
+            background: #b5838d;
+        }
+
+        /* Popups / Ventanas emergentes */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .3);
+            z-index: 1000;
+        }
+
+        .popup-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #0b1b5e;
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .popup-title i {
+            font-size: 30px;
+        }
+
+        .popup ul {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .popup li {
+            margin-bottom: 10px;
+        }
+
+        .cerrar {
+            float: right;
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .cerrar:hover {
+            background: #c9302c;
+        }
+
+        .fondo {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(4px);
+            /* Efecto blur de fondo profesional */
+            top: 0;
+            left: 0;
+            z-index: 999;
+        }
+
+        .archivo-section {
+            margin-top: 25px;
+            border-top: 2px solid #f0f2f5;
+            padding-top: 20px;
+        }
+
+        .archivo-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .archivo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #0b1b5e;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .archivo-link.secondary {
+            background: #4d5b76;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 430px;
+            border: 1px solid #d9dde5;
+            border-radius: 8px;
+            background: #f8f9fb;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 18px;
+            }
+
+            .popup {
+                width: 86%;
+                padding: 24px;
+            }
+
+            .pdf-viewer {
+                height: 320px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="header-container">
+        <div class="baby-avatar">
+            <i class="fa-solid fa-baby"></i>
+        </div>
+        <h1>IAAS EN NEONATOS Y MENORES DE 1 AÑO</h1>
+        <h2>PROY-NOM-045-SSA-2026 | Datos de Vigilancia 2026</h2>
+    </div>
+
+    <div class="grid">
+
+        <div class="card marco" onclick="abrir('marco')">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>MARCO NORMATIVO</span>
+        </div>
+
+        <div class="card vigilancia" onclick="abrir('vigilancia')">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>VIGILANCIA</span>
+        </div>
+
+        <div class="card antisepsia" onclick="abrir('antisepsia')">
+            <i class="fa-solid fa-pump-medical"></i>
+            <span>PREVENCIÓN Y ANTISEPSIA</span>
+        </div>
+
+        <div class="card dispositivos" onclick="abrir('dispositivos')">
+            <i class="fa-solid fa-band-aid"></i>
+            <span>DISPOSITIVOS Y FIJACIONES</span>
+        </div>
+
+        <div class="card alimentacion" onclick="abrir('alimentacion')">
+            <i class="fa-solid fa-baby-carriage"></i>
+            <span>ALIMENTACIÓN SEGURA</span>
+        </div>
+
+    </div>
+
+    <div class="fondo" id="fondo" onclick="cerrar()"></div>
+
+    <div class="popup" id="marco">
+        <button class="cerrar" onclick="cerrar()">Cerrar</button>
+        <h3 class="popup-title"><i class="fa-solid fa-shield-halved" style="color:#2a9d8f;"></i> Marco Normativo</h3>
+        <p>
+            Contiene las disposiciones generales del PROY-NOM-045-SSA-2026 para la
+            prevención, vigilancia y control de las Infecciones Asociadas a la Atención
+            de la Salud (IAAS) en neonatos y menores de un año.
+        </p>
+        <ul>
+            <li>Definiciones operacionales.</li>
+            <li>Responsabilidades institucionales.</li>
+            <li>Programas de prevención.</li>
+            <li>Vigilancia epidemiológica.</li>
+            <li>Control ambiental.</li>
+            <li>Seguridad del paciente neonatal.</li>
+        </ul>
+        <div class="archivo-section">
+            <div class="archivo-actions">
+                <a class="archivo-link" href="normativo.pdf" target="_blank"
+                    rel="noopener">
+                    <i class="fa-solid fa-file-pdf"></i> Abrir archivo
+                </a>
+                <a class="archivo-link secondary" href="normativo.pdf" download>
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
+            </div>
+            <iframe class="pdf-viewer" src="normativo.pdf"
+                title="Marco Normativo"></iframe>
+        </div>
+    </div>
+
+    <div class="popup" id="vigilancia">
+        <button class="cerrar" onclick="cerrar()">Cerrar</button>
+        <h3 class="popup-title"><i class="fa-solid fa-chart-line" style="color:#f4a261;"></i> Vigilancia Epidemiológica
+        </h3>
+        <ul>
+            <li>Detección oportuna de casos y brotes.</li>
+            <li>Notificación semanal obligatoria.</li>
+            <li>Alerta en menos de 24 horas ante brotes.</li>
+            <li>Estratificación por peso y edad.</li>
+            <li>Monitoreo de NAV, ITS-CC e IVU-CU.</li>
+            <li>Registro en sistemas de vigilancia institucional.</li>
+        </ul>
+        <div class="archivo-section">
+            <div class="archivo-actions">
+                <a class="archivo-link" href="vigilancia.pdf"
+                    target="_blank" rel="noopener">
+                    <i class="fa-solid fa-file-pdf"></i> Abrir archivo
+                </a>
+                <a class="archivo-link secondary"
+                    href="vigilancia.pdf" download>
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
+            </div>
+            <iframe class="pdf-viewer" src="vigilancia.pdf"
+                title="Vigilancia Epidemiologica"></iframe>
+        </div>
+    </div>
+
+    <div class="popup" id="antisepsia">
+        <button class="cerrar" onclick="cerrar()">Cerrar</button>
+        <h3 class="popup-title"><i class="fa-solid fa-pump-medical" style="color:#a06cd5;"></i> Prevención y Antisepsia
+        </h3>
+        <ul>
+            <li>Higiene de manos basada en los 5 momentos OMS.</li>
+            <li>Alcohol al 70% como antiséptico de elección.</li>
+            <li>Control ambiental neonatal.</li>
+            <li>Desinfección terminal de incubadoras.</li>
+            <li>Monitoreo microbiológico del agua.</li>
+            <li>Auditorías de cumplimiento.</li>
+        </ul>
+        <div class="archivo-section">
+            <div class="archivo-actions">
+                <a class="archivo-link" href="prevencion.pdf"
+                    target="_blank" rel="noopener">
+                    <i class="fa-solid fa-file-pdf"></i> Abrir archivo
+                </a>
+                <a class="archivo-link secondary" href="prevencion.pdf"
+                    download>
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
+            </div>
+            <iframe class="pdf-viewer" src="prevencion.pdf"
+                title="Prevencion y Antisepsia"></iframe>
+        </div>
+    </div>
+
+    <div class="popup" id="dispositivos">
+        <button class="cerrar" onclick="cerrar()">Cerrar</button>
+        <h3 class="popup-title"><i class="fa-solid fa-band-aid" style="color:#e9c46a;"></i> Dispositivos y Fijaciones
+        </h3>
+        <ul>
+            <li>Fijación segura de catéteres.</li>
+            <li>Prevención de desplazamientos accidentales.</li>
+            <li>Reducción de lesiones cutáneas.</li>
+            <li>Inspección periódica de accesos.</li>
+            <li>Trazabilidad de dispositivos invasivos.</li>
+        </ul>
+        <div class="archivo-section">
+            <div class="archivo-actions">
+                <a class="archivo-link" href="Fijaciones%20y%20Sujeciones%20Seguras%20en%20Neonatos.pdf" target="_blank"
+                    rel="noopener">
+                    <i class="fa-solid fa-file-pdf"></i> Abrir archivo
+                </a>
+                <a class="archivo-link secondary" href="fijaciones.pdf"
+                    download>
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
+            </div>
+            <iframe class="pdf-viewer" src="fijaciones.pdf"
+                title="Dispositivos y Fijaciones"></iframe>
+        </div>
+    </div>
+
+    <div class="popup" id="alimentacion">
+        <button class="cerrar" onclick="cerrar()">Cerrar</button>
+        <h3 class="popup-title"><i class="fa-solid fa-bottle-dropper" style="color:#b5838d;"></i> Alimentación Segura
+        </h3>
+        <ul>
+            <li>Banco de Leche Humana.</li>
+            <li>Pasteurización a 62.5°C por 30 minutos.</li>
+            <li>Control de lactarios.</li>
+            <li>Preparación segura de fórmulas.</li>
+            <li>Cadena de frío y trazabilidad.</li>
+            <li>Sanitización de utensilios.</li>
+        </ul>
+        <div class="archivo-section">
+            <div class="archivo-actions">
+                <a class="archivo-link" href="Alimentaci%C3%B3n%20Segura%20en%20Neonatos%20(1).pdf" target="_blank"
+                    rel="noopener">
+                    <i class="fa-solid fa-file-pdf"></i> Abrir archivo
+                </a>
+                <a class="archivo-link secondary" href="alimentacion.pdf" download>
+                    <i class="fa-solid fa-download"></i> Descargar
+                </a>
+            </div>
+            <iframe class="pdf-viewer" src="alimentacion.pdf"
+                title="Alimentacion Segura"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function abrir(id) {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('fondo').style.display = 'block';
+        }
+
+        function cerrar() {
+            document.querySelectorAll('.popup').forEach(x => {
+                x.style.display = 'none';
+            });
+            document.getElementById('fondo').style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>
